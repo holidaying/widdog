@@ -1,74 +1,124 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Widdog by sessionStorage</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Widdog</h1>
-      <h2 class="project-tagline"></h2>
-      <a href="https://github.com/sessionStorage/widdog" class="btn">View on GitHub</a>
-      <a href="https://github.com/sessionStorage/widdog/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/sessionStorage/widdog/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+<html>
 
-    <section class="main-content">
-      <p>&lt;!DOCTYPE html&gt;
-</p>
-
-<p></p>
-    
-    
-    
-    
-    
-    
-    
-    聊天室
-    
-
-    
+<head>
+    <meta charset="utf-8" http-equiv="content-type" content="text/html" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, target-densitydpi=medium-dpi, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Pragram" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>聊天室</title>
+    <script src = "https://cdn.wilddog.com/js/client/current/wilddog.js" ></script>
+</head>
+    <style>
     .none
     {
         display: none;
     }
+</style>
+<body>
+    <p class="">永久聊天室</p>
+    <p class="selectinfor">
+        <input type="text" id="whoName" placeholder="输入你查询的人">
+        <input type="submit" value="查询记录" id="selectRecord"></p>
+    <p class="clearbody">
+        <input type="submit" value="清除页面" id="clear"></p>
+    <p class="clearuser">
+        <input type="submit" value="清除自己的聊天记录" id="clearuser"></p>
+    <p class="userName">
+        <input type="text" id="userName" placeholder="输入你的nickname">
+        <input type="submit" value="确定" id="submitName"></p>
+    <p class="comment none">
+        <input type="text" id="world">
+        <input type="submit" value="聊天" id="submit"></p>
+    <div class="commentDiv"></div>
 
+</body>
+    <script src="http://cdn.bootcss.com/zepto/1.1.4/zepto.min.js" type="text/javascript"></script>
+    <script>
+(function($) {
+    var ref = new Wilddog("https://john.wilddogio.com/");
+    var nickname = localStorage.getItem("userName");
 
-    <p>永久聊天室</p>
-    <p>
-        
-        </p>
-    <p>
-        </p>
-    <p>
-        </p>
-    <p>
-        
-        </p>
-    <p>
-        
-        </p>
-    <div></div>
+    if(nickname)
+    {
+        $(".userName").addClass("none");
+        $(".comment").removeClass("none")
+    }
+    $("#clear").click(function() {
+     $(".commentDiv").empty();
+    });
+     $("#clearuser").click(function() {
+                ref.on("value", function(snapshot) {
+                console.log(snapshot);
+                snapshot.forEach(function(item)
+                {
+                    if(item.child("nicname").val()==nickname)
+                    {
+                        item.ref().remove();
+                    }
+                })
+                ref.off("value");
+             })
+    });
+    $("#selectRecord").click(function() {
 
-<p>
+        var userName = $("#whoName").val();
+        if(userName=="")
+        {
+            alert("请输入用户名");
+        }
+        else
+        {
+            ref.on("value", function(snapshot) {
+                $(".commentDiv").empty();
+                var count=0;
+                snapshot.forEach(function(item)
+                {
+                    if(item.child("nicname").val()==userName)
+                    {
+                        count++;
+                        $(".commentDiv").append('<p class="'+item.key()+'">' + item.child("nicname").val()+':'+item.child("sayword").val() + '</p>');
+                    }
+                })
+                if(count==0)
+                {
+                    $(".commentDiv").append('<p'+'没有这个人的记录</p>')
+                }
+               ref.off("value");
+           });
+        }
+    });
+    $("#submitName").click(function() {
+        var userName = $("#userName").val();
+        localStorage.setItem("userName",userName);
+        $(".userName").addClass("none");
+        $(".comment").removeClass("none")
+    });
+    $("#submit").click(function() {
+        var name = localStorage.getItem("userName")?localStorage.getItem("userName"):"匿名";
+        console.log(name);
+        var word = $("#world").val();
+        ref.push({
+            "sayword": word,
+            "nicname":name
+        });
+    });
+
+    // ref.onDisconnect().remove();删除数据库所有记录
+    ref.on('child_removed', function(snapshot) {
+        console.log("=============child_removed==========================");
+        console.log(snapshot.child("sayword").val());
+        $("p."+snapshot.key()).remove();
+    });
+    ref.on('child_added', function(snapshot) {
+        console.log("========================================");
+        console.log(snapshot.child("sayword").val());
+        $(".commentDiv").append('<p class="'+snapshot.key()+'">' + snapshot.child("nicname").val()+':'+snapshot.child("sayword").val() + '</p>');
+    });
     
-    
-</p>
-
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/sessionStorage/widdog">Widdog</a> is maintained by <a href="https://github.com/sessionStorage">sessionStorage</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
-  </body>
+})(Zepto);
+</script>
 </html>
