@@ -9,116 +9,46 @@
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="Pragram" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache">
-    <title>聊天室</title>
+    <link href="css/core.css" rel="stylesheet" type="text/css" />
+    <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="css/common.css" rel="stylesheet" type="text/css" />
+    <link href="css/register.css" rel="stylesheet" type="text/css" />
     <script src = "https://cdn.wilddog.com/js/client/current/wilddog.js" ></script>
-</head>
-    <style>
-    .none
-    {
-        display: none;
-    }
-</style>
-<body>
-    <p class="">永久聊天室</p>
-    <p class="selectinfor">
-        <input type="text" id="whoName" placeholder="输入你查询的人">
-        <input type="submit" value="查询记录" id="selectRecord"></p>
-    <p class="clearbody">
-        <input type="submit" value="清除页面" id="clear"></p>
-    <p class="clearuser">
-        <input type="submit" value="清除自己的聊天记录" id="clearuser"></p>
-    <p class="userName">
-        <input type="text" id="userName" placeholder="输入你的nickname">
-        <input type="submit" value="确定" id="submitName"></p>
-    <p class="comment none">
-        <input type="text" id="world">
-        <input type="submit" value="聊天" id="submit"></p>
-    <div class="commentDiv"></div>
-
-</body>
     <script src="http://cdn.bootcss.com/zepto/1.1.4/zepto.min.js" type="text/javascript"></script>
-    <script>
-(function($) {
-    var ref = new Wilddog("https://john.wilddogio.com/");
-    var nickname = localStorage.getItem("userName");
+    <title>永久聊天室</title>
+</head>
 
-    if(nickname)
-    {
-        $(".userName").addClass("none");
-        $(".comment").removeClass("none")
-    }
-    $("#clear").click(function() {
-     $(".commentDiv").empty();
-    });
-     $("#clearuser").click(function() {
-                ref.on("value", function(snapshot) {
-                console.log(snapshot);
-                snapshot.forEach(function(item)
-                {
-                    if(item.child("nicname").val()==nickname)
-                    {
-                        item.ref().remove();
-                    }
-                })
-                ref.off("value");
-             })
-    });
-    $("#selectRecord").click(function() {
+<body>
+    <div class="main none">
+        <div class="fix-box" style="opacity: 1;">
+            <div class="move-box" style="animation: mm 25s ease infinite;">
+                <img class="bg-img" src="images/register-bg.jpg" height="100%"></div>
+        </div>
+        <div class="cont">
+            <div class="demo">
+                <div class="login">
+                    <div class="login__check"></div>
+                    <div class="login__form">
+                        <div class="login__row">
+                            <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
+                                <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />
+                            </svg>
+                            <input type="text" class="login__input name" placeholder="姓名" />
+                        </div>
+                        <div class="login__row">
+                            <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
+                                <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
+                            </svg>
+                            <input type="password" class="login__input pass" placeholder="密码" />
+                        </div>
+                        <button type="button" class="login__submit">注册</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+    <script src="js/core.js" type="text/javascript"></script>
+    <script src="js/register.js" type="text/javascript"></script>
 
-        var userName = $("#whoName").val();
-        if(userName=="")
-        {
-            alert("请输入用户名");
-        }
-        else
-        {
-            ref.on("value", function(snapshot) {
-                $(".commentDiv").empty();
-                var count=0;
-                snapshot.forEach(function(item)
-                {
-                    if(item.child("nicname").val()==userName)
-                    {
-                        count++;
-                        $(".commentDiv").append('<p class="'+item.key()+'">' + item.child("nicname").val()+':'+item.child("sayword").val() + '</p>');
-                    }
-                })
-                if(count==0)
-                {
-                    $(".commentDiv").append('<p'+'没有这个人的记录</p>')
-                }
-               ref.off("value");
-           });
-        }
-    });
-    $("#submitName").click(function() {
-        var userName = $("#userName").val();
-        localStorage.setItem("userName",userName);
-        $(".userName").addClass("none");
-        $(".comment").removeClass("none")
-    });
-    $("#submit").click(function() {
-        var name = localStorage.getItem("userName")?localStorage.getItem("userName"):"匿名";
-        console.log(name);
-        var word = $("#world").val();
-        ref.push({
-            "sayword": word,
-            "nicname":name
-        });
-    });
-
-    // ref.onDisconnect().remove();删除数据库所有记录
-    ref.on('child_removed', function(snapshot) {
-        console.log("=============child_removed==========================");
-        console.log(snapshot.child("sayword").val());
-        $("p."+snapshot.key()).remove();
-    });
-    ref.on('child_added', function(snapshot) {
-        console.log("========================================");
-        console.log(snapshot.child("sayword").val());
-        $(".commentDiv").append('<p class="'+snapshot.key()+'">' + snapshot.child("nicname").val()+':'+snapshot.child("sayword").val() + '</p>');
-    });
-    
-})(Zepto);
-</script>
 </html>
