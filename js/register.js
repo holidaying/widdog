@@ -46,6 +46,7 @@ $(document).ready(function() {
                     if(userName==""||password=="")
                     {
                         alert("请输入完整用户名和密码");
+                        $(that).removeClass("processing");
                     }
                     else
                     {
