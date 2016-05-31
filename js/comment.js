@@ -23,6 +23,7 @@ $(document).ready(function() {
                     "sayword": word,
                     "nicname": name
                 });
+               $("#world").val("");
             });
             ref.on('child_added', function(snapshot) {
                 $(".commentDiv").append('<p class="' + snapshot.key() + ' fadeInRight" ><span>' + snapshot.child("nicname").val() + ':' + snapshot.child("sayword").val() + '</span></p>');
