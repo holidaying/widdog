@@ -22,6 +22,7 @@ body,.main{
 }
 .commentDiv p
 {
+    font-size: 16px;
     position: relative;
     color: #fff;
     border-radius: 6px;
@@ -53,12 +54,13 @@ p span
 .selectinfor input[type=text]
 {
   position: relative;
-  height: 30px;
+  height: 40px;
   border-radius: 5px;
   width: 80%;
   background: transparent;
   border:1px solid #fff;
   color:#fff;
+  font-size: 16px;
   text-indent: 10px;
 }
 .selectinfor input[type=submit]
@@ -77,9 +79,10 @@ p span
 .sendWorld input[type=text]
 {
   position: relative;
-  height: 30px;
+  height: 40px;
   border-radius: 5px;
   width: 80%;
+  font-size: 16px;
   background: transparent;
   border:1px solid #fff;
   color:#fff;
