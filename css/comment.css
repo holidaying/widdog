@@ -16,9 +16,10 @@ body,.main{
   padding: 20px 10px;
   color:#fff;
   overflow-y:auto;
-  height: calc(100% - 70px);
+  margin: 10px 0px;
+  height: calc(100% - 150px);
 
-  height: -webkit-calc(100% - 70px);  
+  height: -webkit-calc(100% - 150px);  
 }
 .commentDiv p
 {
@@ -98,6 +99,7 @@ p span
   background: #FF3366;
   color:#fff;
   margin-left: 2%;
+   font-size:1.5rem;
   text-align: center;
 }
 
