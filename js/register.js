@@ -47,6 +47,7 @@ $(document).ready(function() {
                     {
                         alert("请输入完整用户名和密码");
                         $(that).removeClass("processing");
+                        animating = false;
                     }
                     else
                     {
