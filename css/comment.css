@@ -16,6 +16,7 @@ body,.main{
   padding: 20px 10px;
   color:#fff;
   overflow-y:auto;
+    overflow-x:hidden;
   margin: 10px 0px;
   height: calc(100% - 150px);
 
