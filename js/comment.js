@@ -19,6 +19,11 @@ $(document).ready(function() {
                 {
                     $(".noRecord").remove();
                 };
+                if($.trim(word)=="")
+                {
+                    alert("聊天不能为空");
+                    return;
+                }
                 ref.push({
                     "sayword": word,
                     "nicname": name
@@ -31,6 +36,13 @@ $(document).ready(function() {
             });
             $("#selectbtn").click(function() {
                 $(".selectinfor").removeClass("none");
+            });
+            $("#world").on("focus",function()
+            {
+                 $(".selectinfor").addClass("none");
+            })
+              $("#clear").click(function() {
+                $(".commentDiv").empty();
             });
             $("#clearuser").click(function() {
                 ref.on("value", function(snapshot) {
